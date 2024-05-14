@@ -735,6 +735,25 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>maven-restlet</id>
+            <name>Public online Restlet repository</name>
+            <url>https://maven.restlet.talend.com</url>
+        </repository>
+
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshot Repository</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>kyligence</id>
+            <name>Kyligence Repository</name>
+            <url>https://repository.kyligence.io/repository/maven-public</url>
+        </repository>
         <!--
     <repository>
       <id>repo</id>

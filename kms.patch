@@ -1,0 +1,27 @@
+From 1eae48b8f96cb0e9e43cd1b6ec3f4414fa14d498 Mon Sep 17 00:00:00 2001
+From: Palash Das <dpalash.new@gamil.com>
+Date: Tue, 2 Jun 2020 16:04:46 +0530
+Subject: [PATCH] RANGER-2317 | Use reflection to invoke constructor to make it
+ compile safe for jdk versions till 11
+
+---
+ .../org/apache/hadoop/crypto/key/RangerSafenetKeySecure.java  | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/kms/src/main/java/org/apache/hadoop/crypto/key/RangerSafenetKeySecure.java b/kms/src/main/java/org/apache/hadoop/crypto/key/RangerSafenetKeySecure.java
+index 371e367c1..8a9919da0 100644
+--- a/kms/src/main/java/org/apache/hadoop/crypto/key/RangerSafenetKeySecure.java
++++ b/kms/src/main/java/org/apache/hadoop/crypto/key/RangerSafenetKeySecure.java
+@@ -69,7 +69,9 @@ public class RangerSafenetKeySecure implements RangerKMSMKI {
+ 			int javaVersion = getJavaVersion();
+ 			/*Minimum java requirement for Ranger KMS is Java 8 and Maximum java supported by Ranger KMS is Java 11*/
+ 			if(javaVersion == 8){
+-				provider = new sun.security.pkcs11.SunPKCS11(pkcs11CfgFilePath);
++                provider = (Provider) Class.forName("sun.security.pkcs11.SunPKCS11")
++                        .getConstructor(String.class)
++                        .newInstance(pkcs11CfgFilePath);
+ 			}else if(javaVersion == 9 || javaVersion == 10 || javaVersion == 11){
+ 				Class<Provider> cls = Provider.class;
+ 				Method configureMethod = null;
+-- 
+2.24.3 (Apple Git-128)
